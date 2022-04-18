@@ -4,6 +4,7 @@ import cl.medvet.medvetbackend.models.EmployeeModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.repository.impl.EmployeeRepositoryImpl;
 import cl.medvet.medvetbackend.services.IEmployeeService;
+import cl.medvet.medvetbackend.util.PasswordEncryption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
     @Autowired
     EmployeeRepositoryImpl empRepo = new EmployeeRepositoryImpl();
+
+    PasswordEncryption pe = new PasswordEncryption();
 
     @Override
     public ResponseModel getEmployees() {
@@ -138,6 +141,9 @@ public class EmployeeServiceImpl implements IEmployeeService {
         int resp = 0;
 
         try {
+
+            // encoding pass:
+            employee.setPassword(pe.encode(employee.getPassword()));
 
             resp = empRepo.createEmployee(employee);
 

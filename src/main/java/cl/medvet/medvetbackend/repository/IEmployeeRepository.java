@@ -15,4 +15,5 @@ public interface IEmployeeRepository {
     public int editEmployee(EmployeeModel employee);
 
     public int createEmployee(EmployeeModel employee);
+
 }

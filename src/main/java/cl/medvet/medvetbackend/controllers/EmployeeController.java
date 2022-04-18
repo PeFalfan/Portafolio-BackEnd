@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
 
     @Autowired
-    EmployeeServiceImpl emp = new EmployeeServiceImpl();
+    EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
 
 
     // Endpoint for get All Employees
@@ -21,7 +21,7 @@ public class EmployeeController {
 
         try{
 
-            response = emp.getEmployees();
+            response = employeeService.getEmployees();
 
         }catch (Exception e){
             System.out.println("Error al consultar Servicio...");
@@ -39,7 +39,7 @@ public class EmployeeController {
 
         try {
 
-            response = emp.getEmployeeByRut(rutEmployee);
+            response = employeeService.getEmployeeByRut(rutEmployee);
 
         } catch (Exception e){
 
@@ -60,7 +60,7 @@ public class EmployeeController {
 
         try {
 
-            response = emp.deleteEmployee(rutEmployee);
+            response = employeeService.deleteEmployee(rutEmployee);
 
         } catch (Exception e) {
 
@@ -80,7 +80,7 @@ public class EmployeeController {
 
         try {
 
-            response = emp.editEmployee(employee);
+            response = employeeService.editEmployee(employee);
 
         }catch (Exception e) {
             System.out.println("Error al editar Empleado...");
@@ -97,7 +97,7 @@ public class EmployeeController {
 
         try {
 
-            response = emp.createEmployee(employee);
+            response = employeeService.createEmployee(employee);
 
         } catch (Exception e ){
             System.out.println("Error al crear empleado...");
