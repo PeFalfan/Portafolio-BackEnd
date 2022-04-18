@@ -2,8 +2,12 @@ package cl.medvet.medvetbackend.models;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.io.Serializable;
+
 @EntityScan
-public class EmployeeModel {
+public class EmployeeModel implements Serializable {
+
+    private static final long serialVersionUID = 230857303795703086L;
     private String rutEmployee;
     private String dvRut;
     private String nameEmployee;

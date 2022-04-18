@@ -46,7 +46,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
     @Override
     public EmployeeModel getEmployeeByRut(String rutEmployee) {
 
-        EmployeeModel employee = new EmployeeModel();
+        EmployeeModel employee;
 
         try (PreparedStatement stmt = getConnection().
                 prepareStatement("SELECT * FROM empleado WHERE rut_empleado = ?")) {
@@ -147,6 +147,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
         return res;
     }
 
+    // Method to build up an Employee
     private EmployeeModel mapEmployee(ResultSet rs) throws SQLException {
         EmployeeModel employee = new EmployeeModel();
 

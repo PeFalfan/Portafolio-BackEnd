@@ -1,6 +1,10 @@
 package cl.medvet.medvetbackend.models;
 
-public class ResponseModel {
+import java.io.Serializable;
+
+public class ResponseModel implements Serializable {
+
+    private static final long serialVersionUID = -3669849981502330781L;
     private String messageResponse;
     private Object data;
     private String error;
