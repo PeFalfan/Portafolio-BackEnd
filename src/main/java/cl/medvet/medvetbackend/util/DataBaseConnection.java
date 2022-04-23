@@ -17,10 +17,10 @@ public class DataBaseConnection {
             pool.setUrl(url);
             pool.setUsername(userName);
             pool.setPassword(password);
-            pool.setInitialSize(5);
-            pool.setMinIdle(5);
-            pool.setMaxIdle(10);
-            pool.setMaxTotal(15);
+            pool.setInitialSize(20);
+            pool.setMinIdle(20);
+            pool.setMaxIdle(30);
+            pool.setMaxTotal(30);
 
         }
         return pool;
