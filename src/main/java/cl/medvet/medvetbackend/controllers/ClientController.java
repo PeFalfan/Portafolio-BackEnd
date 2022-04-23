@@ -90,6 +90,7 @@ public class ClientController {
     }
 
     // Endpoint to create a client
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/createClient")
     public @ResponseBody ResponseModel createClient(@RequestBody ClientPetModel clientPet) {
 
