@@ -5,6 +5,7 @@ import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.services.impl.PetServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class PetController {
 

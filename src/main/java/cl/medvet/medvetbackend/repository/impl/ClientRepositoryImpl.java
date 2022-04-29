@@ -1,8 +1,6 @@
 package cl.medvet.medvetbackend.repository.impl;
 
-import cl.medvet.medvetbackend.models.AddressModel;
-import cl.medvet.medvetbackend.models.ClientModel;
-import cl.medvet.medvetbackend.models.PetModel;
+import cl.medvet.medvetbackend.models.*;
 import cl.medvet.medvetbackend.repository.IClientRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
 import org.springframework.stereotype.Repository;
@@ -17,6 +15,9 @@ public class ClientRepositoryImpl implements IClientRepository {
     private Connection getConnection() throws SQLException {
         return DataBaseConnection.getConnection();
     }
+
+    // this is only here to not have to create a whole service logIn for employees or clients.
+    EmployeeRepositoryImpl emp = new EmployeeRepositoryImpl();
 
     // Method to get all the clients
     @Override
@@ -61,6 +62,47 @@ public class ClientRepositoryImpl implements IClientRepository {
                 client = mapClient(rs);
             } else {
                 client = null;
+            }
+
+            return client;
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public ClientModel logIn(LogInModel usr) {
+
+        ClientModel client;
+
+        EmployeeModel employee;
+
+        try (PreparedStatement stmt = getConnection().
+                prepareStatement("SELECT cl.rut_cliente, cl.nombre_cliente, " +
+                        "cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion\n" +
+                        "FROM cliente cl JOIN direccion dr ON cl.DIRECCION_id_direccion = dr.id_direccion WHERE email_cliente = ?")) {
+
+            stmt.setString(1, usr.getEmail());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                client = mapClient(rs);
+            } else {
+                client = null;
+            }
+
+            if (client == null){
+                employee = emp.getEmployeeByEMail(usr.getEmail());
+
+                if (employee != null){
+                    client.setClientRut(employee.getPassword());
+                    client.setClientPassword(employee.getPassword());
+                    client.setClientEmail(employee.getEmailEmployee());
+                    return client;
+                }
             }
 
             return client;
