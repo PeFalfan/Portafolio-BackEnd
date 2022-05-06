@@ -281,4 +281,11 @@ public class ClientServiceImpl implements IClientService {
         return response;
     }
 
+    public ResponseModel getCommunes(){
+
+        ResponseModel resp = new ResponseModel();
+        resp.setData(clientRepo.getCommunes());
+        return resp;
+    }
+
 }

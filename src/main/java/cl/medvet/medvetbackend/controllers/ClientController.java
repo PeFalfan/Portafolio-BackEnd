@@ -17,21 +17,38 @@ public class ClientController {
     // Endpoint to get all Clients
     @GetMapping(value = "/getClients")
     public @ResponseBody ResponseModel getAllClients(){
-
         ResponseModel response = new ResponseModel();
-
         try {
-
             response = clientService.getClients();
-
         } catch (Exception e) {
             System.out.println("Error al consultar Servicio...");
             e.printStackTrace();
         }
-
         return response;
-
     }
+
+    // Endpoint to get all communes
+    @GetMapping(value = "/getCommunes")
+    public @ResponseBody ResponseModel getCommunes(){
+        ResponseModel respuesta = new ResponseModel();
+        try{
+            respuesta = clientService.getCommunes();
+            respuesta.setError(null);
+            respuesta.setMessageResponse("Comunas cargadas correctamente");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            respuesta.setData(null);
+            respuesta.setMessageResponse("Error al cargar comunas");
+            respuesta.setError(e.getMessage());
+        }
+
+        return respuesta;
+    }
+
+
+
+
+
 
     // Endpoint to get a client by rut
     @GetMapping(value = "/getClientByRut{rutClient}")

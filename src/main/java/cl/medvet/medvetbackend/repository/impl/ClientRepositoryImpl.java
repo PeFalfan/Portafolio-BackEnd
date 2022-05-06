@@ -114,6 +114,38 @@ public class ClientRepositoryImpl implements IClientRepository {
         }
     }
 
+    // function that returns the communes
+    public List<CommuneModel> getCommunes(){
+        List<CommuneModel> communes = new ArrayList<>();
+
+        String query = "SELECT * FROM comuna";
+
+        try(PreparedStatement stmt = getConnection()
+                .prepareStatement(query)){
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                communes.add(mapCommune(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return communes;
+    }
+
+    public CommuneModel mapCommune(ResultSet rs) throws SQLException {
+        CommuneModel commune = new CommuneModel();
+
+        commune.setCutComuna(rs.getString("cut_comuna"));
+        commune.setNameCommune(rs.getString("nombre_comuna"));
+        commune.setCutProv(rs.getString("PROVINCIA_cut_provincia"));
+
+        return commune;
+    }
     public ClientModel getClientByEmail(String email) {
 
         ClientModel client;
