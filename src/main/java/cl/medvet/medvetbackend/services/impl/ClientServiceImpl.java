@@ -88,7 +88,7 @@ public class ClientServiceImpl implements IClientService {
                 if (currentPass.equals(inPass)){
                     response.setMessageResponse("Log In Correcto");
                     response.setError(null);
-                    response.setData(1);
+                    response.setData(cl);
                 }else {
                     response.setMessageResponse("Contraseña incorrecta");
                     response.setError("Contraseña Incorrecta");
@@ -217,8 +217,6 @@ public class ClientServiceImpl implements IClientService {
     public ResponseModel recoverPassword(String email) {
 
         ResponseModel response = new ResponseModel();
-
-
 
         String newPass;
 

@@ -45,11 +45,6 @@ public class ClientController {
         return respuesta;
     }
 
-
-
-
-
-
     // Endpoint to get a client by rut
     @GetMapping(value = "/getClientByRut{rutClient}")
     public @ResponseBody ResponseModel getClientByRut(@RequestParam(value = "rutClient" ) String rutClient ) {

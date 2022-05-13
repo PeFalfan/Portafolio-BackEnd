@@ -227,7 +227,6 @@ public class ClientRepositoryImpl implements IClientRepository {
             res = stmt.executeUpdate();
 
         } catch (SQLException e){
-            System.out.println("Error al actualizar empleado...");
             e.printStackTrace();
         }
 
@@ -239,11 +238,11 @@ public class ClientRepositoryImpl implements IClientRepository {
     public int createClient(ClientModel client, PetModel pet) {
 
         int resPet = 0;
-        String queryPet = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?)";
+        String queryPet = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // first the owner
         int res = 0;
-        String query = "INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().
                 prepareStatement(query)) {
 
@@ -252,8 +251,9 @@ public class ClientRepositoryImpl implements IClientRepository {
             stmt.setString(3, client.getClientLastNames());
             stmt.setString(4, client.getClientPhone());
             stmt.setString(5, client.getClientEmail());
-            stmt.setString(6, client.getClientPassword());
-            stmt.setInt(7, client.getClientAddress().getIdAddress());
+            stmt.setString(6, client.getClientEmailRecovery());
+            stmt.setString(7, client.getClientPassword());
+            stmt.setInt(8, client.getClientAddress().getIdAddress());
 
             res = stmt.executeUpdate();
 
@@ -274,8 +274,10 @@ public class ClientRepositoryImpl implements IClientRepository {
                 stmtPet.setString(2, pet.getBreedPet());
                 stmtPet.setString(3,pet.getAgePet());
                 stmtPet.setString(4, pet.getWeightPet());
-                stmtPet.setString(5, pet.getObservationPet());
-                stmtPet.setString(6, client.getClientRut());
+                stmtPet.setString(5, pet.getSexPet());
+                stmtPet.setString(6, pet.getObservationPet());
+                stmtPet.setString(7, pet.getNamePet());
+                stmtPet.setString(8, client.getClientRut());
 
                 resPet = stmtPet.executeUpdate();
 

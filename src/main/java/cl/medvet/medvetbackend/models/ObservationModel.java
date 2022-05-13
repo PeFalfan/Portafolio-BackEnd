@@ -1,7 +1,10 @@
 package cl.medvet.medvetbackend.models;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import java.io.Serializable;
 
+@EntityScan
 public class ObservationModel implements Serializable {
 
     private static final long serialVersionUID = 1910214044825511548L;

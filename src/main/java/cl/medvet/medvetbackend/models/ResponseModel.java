@@ -1,7 +1,10 @@
 package cl.medvet.medvetbackend.models;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import java.io.Serializable;
 
+@EntityScan
 public class ResponseModel implements Serializable {
 
     private static final long serialVersionUID = -3669849981502330781L;
@@ -36,3 +39,4 @@ public class ResponseModel implements Serializable {
         this.error = error;
     }
 }
+

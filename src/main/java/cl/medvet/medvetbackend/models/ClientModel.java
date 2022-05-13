@@ -13,20 +13,19 @@ public class ClientModel implements Serializable {
     private String clientLastNames;
     private String clientPhone;
     private String clientEmail;
+    private String clientEmailRecovery;
     private String clientPassword;
     private AddressModel clientAddress;
 
     public ClientModel() {
     }
 
-    public ClientModel(String clientRut, String clientName, String clientLastNames, String clientPhone, String clientEmail, String clientPassword, AddressModel clientAddress) {
-        this.clientRut = clientRut;
-        this.clientName = clientName;
-        this.clientLastNames = clientLastNames;
-        this.clientPhone = clientPhone;
-        this.clientEmail = clientEmail;
-        this.clientPassword = clientPassword;
-        this.clientAddress = clientAddress;
+    public String getClientEmailRecovery() {
+        return clientEmailRecovery;
+    }
+
+    public void setClientEmailRecovery(String clientEmailRecovery) {
+        this.clientEmailRecovery = clientEmailRecovery;
     }
 
     public String getClientRut() {

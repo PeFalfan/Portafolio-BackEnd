@@ -13,20 +13,29 @@ public class PetModel implements Serializable {
     private String breedPet;
     private String agePet;
     private String weightPet;
+
+    private String sexPet;
     private String observationPet;
+    private String namePet;
     private String rutOwner;
 
-    public PetModel(int idPet, String speciesPet, String breedPet, String agePet, String weightPet, String observationPet, String rutOwner) {
-        this.idPet = idPet;
-        this.speciesPet = speciesPet;
-        this.breedPet = breedPet;
-        this.agePet = agePet;
-        this.weightPet = weightPet;
-        this.observationPet = observationPet;
-        this.rutOwner = rutOwner;
+    public PetModel() {
     }
 
-    public PetModel() {
+    public String getSexPet() {
+        return sexPet;
+    }
+
+    public void setSexPet(String sexPet) {
+        this.sexPet = sexPet;
+    }
+
+    public String getNamePet() {
+        return namePet;
+    }
+
+    public void setNamePet(String namePet) {
+        this.namePet = namePet;
     }
 
     public int getIdPet() {

@@ -1,6 +1,7 @@
 package cl.medvet.medvetbackend.repository.impl;
 
 import cl.medvet.medvetbackend.models.PetModel;
+import cl.medvet.medvetbackend.models.RecipeModel;
 import cl.medvet.medvetbackend.repository.IPetRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
 import org.springframework.stereotype.Repository;
@@ -129,6 +130,42 @@ public class PetRepositoryImpl implements IPetRepository {
 
         return pet;
 
+    }
+
+    public RecipeModel getRecipeById(int idRecipe){
+
+        RecipeModel recipe = new RecipeModel();
+
+        try(PreparedStatement stmt = getConnection()
+                .prepareStatement("SELECT id_receta, nombre_paciente, nombre_responsable, receta_descrip, nombre_veterinario \n" +
+                        "FROM receta\n" +
+                        "WHERE id_receta = ?;")) {
+            stmt.setInt(1, idRecipe);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                recipe = mapRecipe(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return recipe;
+    }
+
+    private RecipeModel mapRecipe(ResultSet rs) throws SQLException {
+
+        RecipeModel recipe = new RecipeModel();
+
+        recipe.setIdRecipe(rs.getInt("id_receta"));
+        recipe.setNamePet(rs.getString("nombre_paciente"));
+        recipe.setNameOwner(rs.getString("nombre_responsable"));
+        recipe.setRecipeDesc(rs.getString("receta_descrip"));
+        recipe.setNameVet(rs.getString("nombre_veterinario"));
+
+        return recipe;
     }
 
 }
