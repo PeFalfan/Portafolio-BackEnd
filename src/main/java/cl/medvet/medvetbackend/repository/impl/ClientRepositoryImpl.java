@@ -1,8 +1,6 @@
 package cl.medvet.medvetbackend.repository.impl;
 
-import cl.medvet.medvetbackend.models.AddressModel;
-import cl.medvet.medvetbackend.models.ClientModel;
-import cl.medvet.medvetbackend.models.PetModel;
+import cl.medvet.medvetbackend.models.*;
 import cl.medvet.medvetbackend.repository.IClientRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
 import org.springframework.stereotype.Repository;
@@ -17,6 +15,9 @@ public class ClientRepositoryImpl implements IClientRepository {
     private Connection getConnection() throws SQLException {
         return DataBaseConnection.getConnection();
     }
+
+    // this is only here to not have to create a whole service logIn for employees or clients.
+    EmployeeRepositoryImpl emp = new EmployeeRepositoryImpl();
 
     // Method to get all the clients
     @Override
@@ -72,6 +73,79 @@ public class ClientRepositoryImpl implements IClientRepository {
         }
     }
 
+    @Override
+    public ClientModel logIn(LogInModel usr) {
+
+        ClientModel client;
+
+        EmployeeModel employee;
+
+        try (PreparedStatement stmt = getConnection().
+                prepareStatement("SELECT cl.rut_cliente, cl.nombre_cliente, " +
+                        "cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion\n" +
+                        "FROM cliente cl JOIN direccion dr ON cl.DIRECCION_id_direccion = dr.id_direccion WHERE email_cliente = ?")) {
+
+            stmt.setString(1, usr.getEmail());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                client = mapClient(rs);
+            } else {
+                client = null;
+            }
+
+            if (client == null){
+                employee = emp.getEmployeeByEMail(usr.getEmail());
+
+                if (employee != null){
+                    client.setClientRut(employee.getPassword());
+                    client.setClientPassword(employee.getPassword());
+                    client.setClientEmail(employee.getEmailEmployee());
+                    return client;
+                }
+            }
+
+            return client;
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // function that returns the communes
+    public List<CommuneModel> getCommunes(){
+        List<CommuneModel> communes = new ArrayList<>();
+
+        String query = "SELECT * FROM comuna";
+
+        try(PreparedStatement stmt = getConnection()
+                .prepareStatement(query)){
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                communes.add(mapCommune(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return communes;
+    }
+
+    public CommuneModel mapCommune(ResultSet rs) throws SQLException {
+        CommuneModel commune = new CommuneModel();
+
+        commune.setCutComuna(rs.getString("cut_comuna"));
+        commune.setNameCommune(rs.getString("nombre_comuna"));
+        commune.setCutProv(rs.getString("PROVINCIA_cut_provincia"));
+
+        return commune;
+    }
     public ClientModel getClientByEmail(String email) {
 
         ClientModel client;
@@ -153,7 +227,6 @@ public class ClientRepositoryImpl implements IClientRepository {
             res = stmt.executeUpdate();
 
         } catch (SQLException e){
-            System.out.println("Error al actualizar empleado...");
             e.printStackTrace();
         }
 
@@ -165,11 +238,11 @@ public class ClientRepositoryImpl implements IClientRepository {
     public int createClient(ClientModel client, PetModel pet) {
 
         int resPet = 0;
-        String queryPet = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?)";
+        String queryPet = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // first the owner
         int res = 0;
-        String query = "INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = getConnection().
                 prepareStatement(query)) {
 
@@ -178,8 +251,9 @@ public class ClientRepositoryImpl implements IClientRepository {
             stmt.setString(3, client.getClientLastNames());
             stmt.setString(4, client.getClientPhone());
             stmt.setString(5, client.getClientEmail());
-            stmt.setString(6, client.getClientPassword());
-            stmt.setInt(7, client.getClientAddress().getIdAddress());
+            stmt.setString(6, client.getClientEmailRecovery());
+            stmt.setString(7, client.getClientPassword());
+            stmt.setInt(8, client.getClientAddress().getIdAddress());
 
             res = stmt.executeUpdate();
 
@@ -200,8 +274,10 @@ public class ClientRepositoryImpl implements IClientRepository {
                 stmtPet.setString(2, pet.getBreedPet());
                 stmtPet.setString(3,pet.getAgePet());
                 stmtPet.setString(4, pet.getWeightPet());
-                stmtPet.setString(5, pet.getObservationPet());
-                stmtPet.setString(6, client.getClientRut());
+                stmtPet.setString(5, pet.getSexPet());
+                stmtPet.setString(6, pet.getObservationPet());
+                stmtPet.setString(7, pet.getNamePet());
+                stmtPet.setString(8, client.getClientRut());
 
                 resPet = stmtPet.executeUpdate();
 

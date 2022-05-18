@@ -2,10 +2,12 @@ package cl.medvet.medvetbackend.controllers;
 
 import cl.medvet.medvetbackend.models.ClientModel;
 import cl.medvet.medvetbackend.models.ClientPetModel;
+import cl.medvet.medvetbackend.models.LogInModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.services.impl.ClientServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class ClientController {
 
@@ -15,20 +17,32 @@ public class ClientController {
     // Endpoint to get all Clients
     @GetMapping(value = "/getClients")
     public @ResponseBody ResponseModel getAllClients(){
-
         ResponseModel response = new ResponseModel();
-
         try {
-
             response = clientService.getClients();
-
         } catch (Exception e) {
             System.out.println("Error al consultar Servicio...");
             e.printStackTrace();
         }
-
         return response;
+    }
 
+    // Endpoint to get all communes
+    @GetMapping(value = "/getCommunes")
+    public @ResponseBody ResponseModel getCommunes(){
+        ResponseModel respuesta = new ResponseModel();
+        try{
+            respuesta = clientService.getCommunes();
+            respuesta.setError(null);
+            respuesta.setMessageResponse("Comunas cargadas correctamente");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            respuesta.setData(null);
+            respuesta.setMessageResponse("Error al cargar comunas");
+            respuesta.setError(e.getMessage());
+        }
+
+        return respuesta;
     }
 
     // Endpoint to get a client by rut
@@ -40,6 +54,26 @@ public class ClientController {
         try {
 
             response = clientService.getClientByRut(rutClient);
+
+        } catch (Exception e) {
+
+            System.out.println("Error al consultar el servicio...");
+            e.printStackTrace();
+
+        }
+
+        return response;
+    }
+
+    // Endpoint to get a client by rut
+    @PostMapping(value = "/logInClient")
+    public @ResponseBody ResponseModel logInClient(@RequestBody LogInModel usr ) {
+
+        ResponseModel response = new ResponseModel();
+
+        try {
+
+            response = clientService.logIn(usr);
 
         } catch (Exception e) {
 
@@ -90,7 +124,7 @@ public class ClientController {
     }
 
     // Endpoint to create a client
-    @CrossOrigin(origins = "*")
+
     @PostMapping(value = "/createClient")
     public @ResponseBody ResponseModel createClient(@RequestBody ClientPetModel clientPet) {
 

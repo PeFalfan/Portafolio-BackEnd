@@ -5,6 +5,7 @@ import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.services.impl.PetServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class PetController {
 
@@ -77,4 +78,19 @@ public class PetController {
         return response;
     }
 
+    @GetMapping("/getRecipe{idRecipe}")
+    public @ResponseBody ResponseModel getRecipe(@RequestParam(value = "idRecipe") int idRecipe){
+
+        ResponseModel response = new ResponseModel();
+
+        try{
+
+            response = petService.getRecipeById(idRecipe);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
 }

@@ -68,6 +68,29 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
         }
     }
 
+    public EmployeeModel getEmployeeByEMail(String email) {
+        EmployeeModel employee;
+
+        try (PreparedStatement stmt = getConnection().
+                prepareStatement("SELECT * FROM empleado WHERE rut_empleado = ?")) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()){
+                employee = mapEmployee(rs);
+            }else {
+                employee = null;
+            }
+
+            return employee;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // Method to delete an employee, by rut.
     @Override
     public int deleteEmployee(String rut) {

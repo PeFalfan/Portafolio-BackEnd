@@ -1,6 +1,7 @@
 package cl.medvet.medvetbackend.services;
 
 import cl.medvet.medvetbackend.models.ClientModel;
+import cl.medvet.medvetbackend.models.LogInModel;
 import cl.medvet.medvetbackend.models.PetModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 
@@ -9,6 +10,8 @@ public interface IClientService {
     public ResponseModel getClients();
 
     public ResponseModel getClientByRut(String rut);
+
+    public ResponseModel logIn(LogInModel usr);
 
     public ResponseModel deleteClient(String rut);
 

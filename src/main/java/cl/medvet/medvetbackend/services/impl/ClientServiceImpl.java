@@ -1,6 +1,7 @@
 package cl.medvet.medvetbackend.services.impl;
 
 import cl.medvet.medvetbackend.models.ClientModel;
+import cl.medvet.medvetbackend.models.LogInModel;
 import cl.medvet.medvetbackend.models.PetModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.repository.impl.ClientRepositoryImpl;
@@ -8,14 +9,12 @@ import cl.medvet.medvetbackend.services.IClientService;
 import cl.medvet.medvetbackend.util.EmailCommunication;
 import cl.medvet.medvetbackend.util.PasswordEncryption;
 import cl.medvet.medvetbackend.util.PasswordGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClientServiceImpl implements IClientService {
     PasswordEncryption pe = new PasswordEncryption();
 
-    @Autowired
     ClientRepositoryImpl clientRepo = new ClientRepositoryImpl();
 
     @Override
@@ -70,6 +69,50 @@ public class ClientServiceImpl implements IClientService {
     }
 
     @Override
+    public ResponseModel logIn(LogInModel usr) {
+
+        ResponseModel response = new ResponseModel();
+
+        try {
+
+            ClientModel cl = clientRepo.logIn(usr);
+
+            response.setData(cl);
+
+            if ( response.getData() != null ) {
+
+                String currentPass = pe.decode(cl.getClientPassword());
+
+                String inPass = usr.getPassword();
+
+                if (currentPass.equals(inPass)){
+                    response.setMessageResponse("Log In Correcto");
+                    response.setError(null);
+                    response.setData(cl);
+                }else {
+                    response.setMessageResponse("Contraseña incorrecta");
+                    response.setError("Contraseña Incorrecta");
+                    response.setData(0);
+                }
+
+            } else {
+                response.setData(0);
+                response.setMessageResponse("Cliente no encontrado...");
+                response.setError("Error al encontrar cliente");
+            }
+        } catch (Exception e) {
+
+            response.setData(null);
+            response.setError(e.getMessage());
+            response.setMessageResponse("Error al cargar cliente...");
+            e.printStackTrace();
+
+        }
+
+        return response;
+    }
+
+    @Override
     public ResponseModel deleteClient(String rut) {
 
         ResponseModel response = new ResponseModel();
@@ -104,7 +147,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ResponseModel editClient(ClientModel client) {
         ResponseModel response = new ResponseModel();
-        int res = 0;
+        int res;
 
         try {
 
@@ -133,7 +176,7 @@ public class ClientServiceImpl implements IClientService {
 
         ResponseModel response = new ResponseModel();
 
-        int resp = 0;
+        int resp;
 
         try {
 
@@ -175,11 +218,9 @@ public class ClientServiceImpl implements IClientService {
 
         ResponseModel response = new ResponseModel();
 
+        String newPass;
 
-
-        String newPass = "";
-
-        int state = 0;
+        int state;
 
         int emailStatus = 0;
 
@@ -236,6 +277,13 @@ public class ClientServiceImpl implements IClientService {
 
 
         return response;
+    }
+
+    public ResponseModel getCommunes(){
+
+        ResponseModel resp = new ResponseModel();
+        resp.setData(clientRepo.getCommunes());
+        return resp;
     }
 
 }

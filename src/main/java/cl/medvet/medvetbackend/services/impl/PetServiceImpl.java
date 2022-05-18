@@ -134,4 +134,20 @@ public class PetServiceImpl implements IPetService {
 
         return response;
     }
+
+    public ResponseModel getRecipeById(int idRecipe){
+        ResponseModel response = new ResponseModel();
+
+        try{
+
+            response.setData(petRepo.getRecipeById(idRecipe));
+
+        }catch (Exception e){
+            response.setError(e.getMessage());
+            response.setMessageResponse("Error al consultar receta");
+            response.setData(null);
+        }
+
+        return response;
+    }
 }
