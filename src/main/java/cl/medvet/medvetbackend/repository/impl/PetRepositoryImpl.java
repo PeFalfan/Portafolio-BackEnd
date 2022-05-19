@@ -22,16 +22,19 @@ public class PetRepositoryImpl implements IPetRepository {
     public int createPet(PetModel pet) {
 
         int resPet = 0;
-        String query = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmtPet = getConnection()
                 .prepareStatement(query)) {
 
-            stmtPet.setString(1, pet.getSpeciesPet());
+            stmtPet.setString(1,pet.getSpeciesPet());
             stmtPet.setString(2, pet.getBreedPet());
-            stmtPet.setString(3, pet.getAgePet());
+            stmtPet.setString(3,pet.getAgePet());
             stmtPet.setString(4, pet.getWeightPet());
-            stmtPet.setString(5, pet.getObservationPet());
-            stmtPet.setString(6, pet.getRutOwner());
+            stmtPet.setString(5, pet.getSexPet());
+            stmtPet.setString(6, pet.getObservationPet());
+            stmtPet.setString(7, pet.getImage());
+            stmtPet.setString(8, pet.getNamePet());
+            stmtPet.setString(9, pet.getRutOwner());
 
             resPet = stmtPet.executeUpdate();
 
@@ -125,7 +128,10 @@ public class PetRepositoryImpl implements IPetRepository {
         pet.setBreedPet(rs.getString("raza"));
         pet.setAgePet(rs.getString("edad_mascota"));
         pet.setWeightPet(rs.getString("peso_mascota"));
+        pet.setSexPet(rs.getString("sexo_mascota"));
         pet.setObservationPet(rs.getString("Observaciones"));
+        pet.setImage(rs.getString("foto"));
+        pet.setNamePet(rs.getString("nombre_mascota"));
         pet.setRutOwner(rs.getString("CLIENTE_rut_cliente"));
 
         return pet;

@@ -16,6 +16,7 @@ public class PetModel implements Serializable {
 
     private String sexPet;
     private String observationPet;
+    private String image;
     private String namePet;
     private String rutOwner;
 
@@ -24,6 +25,14 @@ public class PetModel implements Serializable {
 
     public String getSexPet() {
         return sexPet;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setSexPet(String sexPet) {

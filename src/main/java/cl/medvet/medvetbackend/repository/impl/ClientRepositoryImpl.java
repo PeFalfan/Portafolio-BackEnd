@@ -238,7 +238,7 @@ public class ClientRepositoryImpl implements IClientRepository {
     public int createClient(ClientModel client, PetModel pet) {
 
         int resPet = 0;
-        String queryPet = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String queryPet = "INSERT INTO mascota VALUES (0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // first the owner
         int res = 0;
@@ -276,8 +276,9 @@ public class ClientRepositoryImpl implements IClientRepository {
                 stmtPet.setString(4, pet.getWeightPet());
                 stmtPet.setString(5, pet.getSexPet());
                 stmtPet.setString(6, pet.getObservationPet());
-                stmtPet.setString(7, pet.getNamePet());
-                stmtPet.setString(8, client.getClientRut());
+                stmtPet.setString(7, pet.getImage());
+                stmtPet.setString(8, pet.getNamePet());
+                stmtPet.setString(9, client.getClientRut());
 
                 resPet = stmtPet.executeUpdate();
 
