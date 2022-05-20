@@ -9,9 +9,18 @@ public class ExamModel implements Serializable {
 
     private static final long serialVersionUID = 7885157731500285777L;
     private int idExam;
-    private String bodyExam;
+    private String examResult;
+    private int idPet;
 
     public ExamModel() {
+    }
+
+    public int getIdPet() {
+        return idPet;
+    }
+
+    public void setIdPet(int idPet) {
+        this.idPet = idPet;
     }
 
     public int getIdExam() {
@@ -22,11 +31,11 @@ public class ExamModel implements Serializable {
         this.idExam = idExam;
     }
 
-    public String getBodyExam() {
-        return bodyExam;
+    public String getExamResult() {
+        return examResult;
     }
 
-    public void setBodyExam(String bodyExam) {
-        this.bodyExam = bodyExam;
+    public void setExamResult(String examResult) {
+        this.examResult = examResult;
     }
 }
