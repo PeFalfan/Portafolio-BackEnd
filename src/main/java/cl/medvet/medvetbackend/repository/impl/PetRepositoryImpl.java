@@ -54,7 +54,7 @@ public class PetRepositoryImpl implements IPetRepository {
 
         int res = 0;
 
-        String query = "UPDATE mascota SET especie_mascota = ?, raza = ?, edad_mascota = ?, peso_mascota = ?, Observaciones = ?, CLIENTE_rut_cliente = ? " +
+        String query = "UPDATE mascota SET especie_mascota = ?, raza = ?, edad_mascota = ?, peso_mascota = ?, sexo_mascota = ?, Observaciones = ?, foto = ?, nombre_mascota = ?, CLIENTE_rut_cliente = ? " +
                 "WHERE id_mascota = ?";
 
         try ( PreparedStatement stmt = getConnection().
@@ -63,9 +63,12 @@ public class PetRepositoryImpl implements IPetRepository {
             stmt.setString(2, pet.getBreedPet());
             stmt.setString(3, pet.getAgePet());
             stmt.setString(4, pet.getWeightPet());
-            stmt.setString(5, pet.getObservationPet());
-            stmt.setString(6, pet.getRutOwner());
-            stmt.setInt(7, pet.getIdPet());
+            stmt.setString(5, pet.getSexPet());
+            stmt.setString(6, pet.getObservationPet());
+            stmt.setString(7, pet.getImage());
+            stmt.setString(8, pet.getNamePet());
+            stmt.setString(9, pet.getRutOwner());
+            stmt.setInt(10, pet.getIdPet());
 
             res = stmt.executeUpdate();
 

@@ -13,7 +13,6 @@ public class PetModel implements Serializable {
     private String breedPet;
     private String agePet;
     private String weightPet;
-
     private String sexPet;
     private String observationPet;
     private String image;

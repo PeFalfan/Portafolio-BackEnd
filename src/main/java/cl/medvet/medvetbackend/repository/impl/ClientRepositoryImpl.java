@@ -209,7 +209,7 @@ public class ClientRepositoryImpl implements IClientRepository {
         int res = 0;
 
         String query = "UPDATE cliente SET nombre_cliente = ?, " +
-                "apellidos_cliente = ?, fono_cliente = ?, email_cliente = ?, contrasena_cliente = ?, " +
+                "apellidos_cliente = ?, fono_cliente = ?, email_cliente = ?, email_recup = ?, contrasena_cliente = ?, " +
                 "DIRECCION_id_direccion = ? " +
                 "WHERE rut_cliente = ?";
 
@@ -220,9 +220,10 @@ public class ClientRepositoryImpl implements IClientRepository {
             stmt.setString(2, client.getClientLastNames());
             stmt.setString(3, client.getClientPhone());
             stmt.setString(4, client.getClientEmail());
-            stmt.setString(5, client.getClientPassword());
-            stmt.setInt(6, client.getClientAddress().getIdAddress());
-            stmt.setString(7, client.getClientRut());
+            stmt.setString(5, client.getClientEmailRecovery());
+            stmt.setString(6, client.getClientPassword());
+            stmt.setInt(7, client.getClientAddress().getIdAddress());
+            stmt.setString(8, client.getClientRut());
 
             res = stmt.executeUpdate();
 
