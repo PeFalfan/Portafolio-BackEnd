@@ -6,7 +6,7 @@ import java.sql.*;
 
 public class DataBaseConnection {
 
-    private static String url = "jdbc:mysql://localhost:3306/proyecto_portafolio?serverTimezine=America/Santiago";
+    private static String url = "jdbc:mysql://localhost:3306/proyecto_portafolio?serverTimezine=America/Santiago;max_allowed_packet=33554432";
     private static String userName = "root";
     private static String password = "knuuto56";
     private static BasicDataSource pool;

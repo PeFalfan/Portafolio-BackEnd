@@ -9,10 +9,19 @@ public class ExamModel implements Serializable {
 
     private static final long serialVersionUID = 7885157731500285777L;
     private int idExam;
+    private String nameExam;
     private String examResult;
     private int idPet;
 
     public ExamModel() {
+    }
+
+    public String getNameExam() {
+        return nameExam;
+    }
+
+    public void setNameExam(String nameExam) {
+        this.nameExam = nameExam;
     }
 
     public int getIdPet() {

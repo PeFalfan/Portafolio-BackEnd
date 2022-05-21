@@ -16,16 +16,6 @@ public class EmployeeModel implements Serializable {
     private int typeEmployee;
     private String password;
 
-    public EmployeeModel(String rutEmployee, String dvRut, String nameEmployee, String emailEmployee, String speciality, int typeEmployee, String password) {
-        this.rutEmployee = rutEmployee;
-        this.dvRut = dvRut;
-        this.nameEmployee = nameEmployee;
-        this.emailEmployee = emailEmployee;
-        this.speciality = speciality;
-        this.typeEmployee = typeEmployee;
-        this.password = password;
-    }
-
     public EmployeeModel() {
     }
 

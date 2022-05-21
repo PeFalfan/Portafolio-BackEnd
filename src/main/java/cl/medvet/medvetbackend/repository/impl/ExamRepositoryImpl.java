@@ -44,6 +44,7 @@ public class ExamRepositoryImpl implements IExamRepository {
         ExamModel exam = new ExamModel();
 
         exam.setIdExam(rs.getInt("id_examen"));
+        exam.setNameExam(rs.getString("examen_nombre"));
         exam.setExamResult(rs.getString("examen_resultado"));
         exam.setIdPet(rs.getInt("MASCOTA_id_mascota"));
 
@@ -53,12 +54,13 @@ public class ExamRepositoryImpl implements IExamRepository {
     @Override
     public int uploadExam(ExamModel exam) {
         int resp = 0;
-        String query = "INSERT INTO examen VALUES (0, ? , ?)";
+        String query = "INSERT INTO examen VALUES (0, ?, ? , ?)";
 
         try (PreparedStatement stmt = getConnection()
                 .prepareStatement(query)) {
-            stmt.setString(1, exam.getExamResult());
-            stmt.setInt(2, exam.getIdPet());
+            stmt.setString(1, exam.getNameExam());
+            stmt.setString(2, exam.getExamResult());
+            stmt.setInt(3, exam.getIdPet());
 
             resp = stmt.executeUpdate();
         } catch ( SQLException e) {
