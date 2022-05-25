@@ -164,4 +164,5 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return response;
     }
 
+    //TODO create a service to load the Specialties and type of employees
 }

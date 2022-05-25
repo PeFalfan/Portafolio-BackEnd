@@ -17,13 +17,6 @@ public class ObservationModel implements Serializable {
     public ObservationModel() {
     }
 
-    public ObservationModel(int observationId, String observationDetail, String idEmployee, int petId) {
-        this.observationId = observationId;
-        this.observationDetail = observationDetail;
-        this.idEmployee = idEmployee;
-        this.petId = petId;
-    }
-
     public int getObservationId() {
         return observationId;
     }

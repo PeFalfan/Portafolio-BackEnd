@@ -6,6 +6,7 @@ import cl.medvet.medvetbackend.services.impl.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class EmployeeController {
 

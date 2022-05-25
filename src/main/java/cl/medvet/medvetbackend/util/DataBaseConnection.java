@@ -19,8 +19,8 @@ public class DataBaseConnection {
             pool.setPassword(password);
             pool.setInitialSize(20);
             pool.setMinIdle(20);
-            pool.setMaxIdle(30);
-            pool.setMaxTotal(30);
+            pool.setMaxIdle(90);
+            pool.setMaxTotal(90);
 
         }
         return pool;

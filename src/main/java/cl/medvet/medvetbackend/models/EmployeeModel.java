@@ -9,14 +9,22 @@ public class EmployeeModel implements Serializable {
 
     private static final long serialVersionUID = 230857303795703086L;
     private String rutEmployee;
-    private String dvRut;
     private String nameEmployee;
     private String emailEmployee;
     private String speciality;
     private int typeEmployee;
     private String password;
+    private String statusEmployee;
 
     public EmployeeModel() {
+    }
+
+    public String getStatusEmployee() {
+        return statusEmployee;
+    }
+
+    public void setStatusEmployee(String statusEmployee) {
+        this.statusEmployee = statusEmployee;
     }
 
     public String getRutEmployee() {
@@ -25,14 +33,6 @@ public class EmployeeModel implements Serializable {
 
     public void setRutEmployee(String rutEmployee) {
         this.rutEmployee = rutEmployee;
-    }
-
-    public String getDvRut() {
-        return dvRut;
-    }
-
-    public void setDvRut(String dvRut) {
-        this.dvRut = dvRut;
     }
 
     public String getNameEmployee() {

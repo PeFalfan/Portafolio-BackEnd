@@ -117,26 +117,28 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
 
         int res = 0;
 
-        String query = "UPDATE empleado SET  dv_rut = ?, nombre_empleado = ?, " +
-                "email_empleado = ?, especialidad = ?, TIPO_EMPLEADO_id_tipo_empleado = ?, contrasena_empleado = ? " +
+        String query = "UPDATE empleado SET nombre_empleado = ?, " +
+                "email_empleado = ?, especialidad = ?, TIPO_EMPLEADO_id_tipo_empleado = ?, contrasena_empleado = ? , estado_empleado = ?" +
                 "WHERE rut_empleado = ?";
 
         try (PreparedStatement stmt = getConnection().
                 prepareStatement(query)) {
 
-            stmt.setString(1, employee.getDvRut());
-            stmt.setString(2, employee.getNameEmployee());
-            stmt.setString(3, employee.getEmailEmployee());
-            stmt.setString(4, employee.getSpeciality());
-            stmt.setInt(5, employee.getTypeEmployee());
-            stmt.setString(6, employee.getPassword());
+            stmt.setString(1, employee.getNameEmployee());
+            stmt.setString(2, employee.getEmailEmployee());
+            stmt.setString(3, employee.getSpeciality());
+            stmt.setInt(4, employee.getTypeEmployee());
+            stmt.setString(5, employee.getPassword());
+            stmt.setString(6, employee.getStatusEmployee());
             stmt.setString(7, employee.getRutEmployee());
+
 
             res = stmt.executeUpdate();
 
         } catch (SQLException e){
             System.out.println("Error al actualizar empleado...");
             e.printStackTrace();
+            res = -1;
         }
 
         return res;
@@ -152,12 +154,12 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
                 prepareStatement(query)) {
 
             stmt.setString(1, employee.getRutEmployee());
-            stmt.setString(2, employee.getDvRut());
-            stmt.setString(3, employee.getNameEmployee());
-            stmt.setString(4, employee.getEmailEmployee());
-            stmt.setString(5, employee.getSpeciality());
-            stmt.setInt(6, employee.getTypeEmployee());
-            stmt.setString(7, employee.getPassword());
+            stmt.setString(2, employee.getNameEmployee());
+            stmt.setString(3, employee.getEmailEmployee());
+            stmt.setString(4, employee.getSpeciality());
+            stmt.setInt(5, employee.getTypeEmployee());
+            stmt.setString(6, employee.getPassword());
+            stmt.setString(7, employee.getStatusEmployee());
 
             res = stmt.executeUpdate();
 
@@ -175,12 +177,12 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
         EmployeeModel employee = new EmployeeModel();
 
         employee.setRutEmployee(rs.getString("rut_empleado"));
-        employee.setDvRut(rs.getString("dv_rut"));
         employee.setNameEmployee(rs.getString("nombre_empleado"));
         employee.setEmailEmployee(rs.getString("email_empleado"));
         employee.setSpeciality(rs.getString("especialidad"));
         employee.setTypeEmployee(Integer.parseInt(rs.getString("TIPO_EMPLEADO_id_tipo_empleado")));
         employee.setPassword(rs.getString("contrasena_empleado"));
+        employee.setStatusEmployee(rs.getString("estado_empleado"));
 
         return employee;
     }
