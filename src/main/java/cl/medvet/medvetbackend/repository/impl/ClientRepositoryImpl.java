@@ -183,7 +183,7 @@ public class ClientRepositoryImpl implements IClientRepository {
         boolean qres = true;
 
         try ( PreparedStatement stmt = getConnection().
-                prepareStatement("SELECT delete_client(?)")) {
+                prepareStatement("DELETE FROM cliente WHERE rut_cliente = ?")) {
 
             stmt.setString(1, rut);
 
@@ -208,13 +208,12 @@ public class ClientRepositoryImpl implements IClientRepository {
 
         int res = 0;
 
-        String query = "UPDATE cliente SET nombre_cliente = ?, " +
-                "apellidos_cliente = ?, fono_cliente = ?, email_cliente = ?, email_recup = ?, contrasena_cliente = ?, " +
-                "DIRECCION_id_direccion = ? " +
+        String clientQuery = "UPDATE cliente SET nombre_cliente = ?, " +
+                "apellidos_cliente = ?, fono_cliente = ?, email_cliente = ?, email_recup = ?, contrasena_cliente = ?" +
                 "WHERE rut_cliente = ?";
 
         try (PreparedStatement stmt = getConnection().
-                prepareStatement(query)) {
+                prepareStatement(clientQuery)) {
 
             stmt.setString(1, client.getClientName());
             stmt.setString(2, client.getClientLastNames());
@@ -222,8 +221,22 @@ public class ClientRepositoryImpl implements IClientRepository {
             stmt.setString(4, client.getClientEmail());
             stmt.setString(5, client.getClientEmailRecovery());
             stmt.setString(6, client.getClientPassword());
-            stmt.setInt(7, client.getClientAddress().getIdAddress());
-            stmt.setString(8, client.getClientRut());
+            stmt.setString(7, client.getClientRut());
+
+            res = stmt.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        String addressQuery = "UPDATE direccion SET direccion = ?, COMUNA_cut_comuna = ? WHERE id_direccion = ?";
+
+        try (PreparedStatement stmt = getConnection().
+                prepareStatement(addressQuery)) {
+
+            stmt.setString(1, client.getClientAddress().getNameAddress());
+            stmt.setString(2, client.getClientAddress().getForeanIdComune());
+            stmt.setInt(3, client.getClientAddress().getIdAddress());
 
             res = stmt.executeUpdate();
 
