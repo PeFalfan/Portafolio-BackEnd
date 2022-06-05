@@ -76,7 +76,7 @@ public class ClientRepositoryImpl implements IClientRepository {
     @Override
     public ClientModel logIn(LogInModel usr) {
 
-        ClientModel client;
+        ClientModel client = new ClientModel();
 
         EmployeeModel employee;
 
@@ -91,16 +91,18 @@ public class ClientRepositoryImpl implements IClientRepository {
             if (rs.next()) {
                 client = mapClient(rs);
             } else {
-                client = null;
+                client.setClientName("1");
             }
 
-            if (client == null){
+            if (client.getClientName().equals("1")){
                 employee = emp.getEmployeeByEMail(usr.getEmail());
 
                 if (employee != null){
-                    client.setClientRut(employee.getPassword());
+                    client.setClientRut(employee.getRutEmployee());
+                    client.setClientName(employee.getNameEmployee());
                     client.setClientPassword(employee.getPassword());
                     client.setClientEmail(employee.getEmailEmployee());
+                    client.setClientEmailRecovery("1");
                     return client;
                 }
             }
@@ -205,6 +207,8 @@ public class ClientRepositoryImpl implements IClientRepository {
     // Method to edit a client
     @Override
     public int editClient(ClientModel client) {
+
+
 
         int res = 0;
 

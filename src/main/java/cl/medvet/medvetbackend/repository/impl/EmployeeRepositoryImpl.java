@@ -72,7 +72,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
         EmployeeModel employee;
 
         try (PreparedStatement stmt = getConnection().
-                prepareStatement("SELECT * FROM empleado WHERE rut_empleado = ?")) {
+                prepareStatement("SELECT * FROM empleado WHERE email_empleado = ?")) {
 
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();

@@ -114,6 +114,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
         try {
 
+            emp.setPassword(pe.encode(emp.getPassword()));
+
             res = empRepo.editEmployee(emp);
 
             response.setData(res);
