@@ -1,10 +1,8 @@
 package cl.medvet.medvetbackend.services.impl;
 
-import cl.medvet.medvetbackend.models.ClientModel;
-import cl.medvet.medvetbackend.models.LogInModel;
-import cl.medvet.medvetbackend.models.PetModel;
-import cl.medvet.medvetbackend.models.ResponseModel;
+import cl.medvet.medvetbackend.models.*;
 import cl.medvet.medvetbackend.repository.impl.ClientRepositoryImpl;
+import cl.medvet.medvetbackend.repository.impl.EmployeeRepositoryImpl;
 import cl.medvet.medvetbackend.services.IClientService;
 import cl.medvet.medvetbackend.util.EmailCommunication;
 import cl.medvet.medvetbackend.util.PasswordEncryption;
@@ -16,6 +14,8 @@ public class ClientServiceImpl implements IClientService {
     PasswordEncryption pe = new PasswordEncryption();
 
     ClientRepositoryImpl clientRepo = new ClientRepositoryImpl();
+
+    EmployeeRepositoryImpl employeeRepo = new EmployeeRepositoryImpl();
 
     @Override
     public ResponseModel getClients() {
@@ -149,9 +149,16 @@ public class ClientServiceImpl implements IClientService {
         ResponseModel response = new ResponseModel();
         int res;
 
+        ClientModel controlClient = new ClientModel();
+
+        controlClient = clientRepo.getClientByRut(client.getClientRut());
+
         try {
 
-            client.setClientPassword(pe.encode(client.getClientPassword()));
+            if (!client.getClientPassword().equals(controlClient.getClientPassword())){
+                client.setClientPassword(pe.encode(client.getClientPassword()));
+            }
+
 
             res = clientRepo.editClient(client);
 
@@ -232,9 +239,42 @@ public class ClientServiceImpl implements IClientService {
             ClientModel client = clientRepo.getClientByEmail(email);
 
             if (client == null) {
-                response.setData(null);
-                response.setMessageResponse("Correo no se encuentra registrado ...");
-                response.setError("Correo no registrado.");
+
+                EmployeeModel employee = new EmployeeModel();
+
+                employee = employeeRepo.getEmployeeByEMail(email);
+
+                if (employee == null) {
+                    response.setData(null);
+                    response.setMessageResponse("Correo no se encuentra registrado ...");
+                    response.setError("Correo no registrado.");
+                } else {
+
+                    // now we generate the new password
+                    newPass = PasswordGenerator.getAlphaNumericString();
+
+                    // we encripted and set it back to the client
+                    newPass = pe.encode(newPass);
+
+                    employee.setPassword(newPass);
+
+                    // now we can update the client in the db:
+
+                    state = employeeRepo.editEmployee(employee);
+
+                    if (state == 1) {
+
+                        String bodyMessage = "Buenas tardes " + employee.getNameEmployee() + "!\n" +
+                                "Esperando te encuentres bien, te dejamos aqui tu nueva clave de ingreso a nuestra plataforma!\n" +
+                                "Clave: " + pe.decode(employee.getPassword()) +"\n" +
+                                "Bienvenido denuevo!\n" +
+                                "Equipo MEDVET.";
+
+                        emailStatus = EmailCommunication.sendMail(email, "Recuperacion de contraseña",bodyMessage);
+
+                    }
+                }
+
             } else {
 
                 // now we generate the new password

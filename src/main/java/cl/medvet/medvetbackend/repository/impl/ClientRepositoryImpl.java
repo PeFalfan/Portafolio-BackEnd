@@ -52,7 +52,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 
         try (PreparedStatement stmt = getConnection().
                 prepareStatement("SELECT cl.rut_cliente, cl.nombre_cliente, " +
-                        "cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion\n" +
+                        "cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion, dr.COMUNA_cut_comuna \n" +
                         "FROM cliente cl JOIN direccion dr ON cl.DIRECCION_id_direccion = dr.id_direccion WHERE rut_cliente = ?")) {
 
             stmt.setString(1, rut);
@@ -82,7 +82,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 
         try (PreparedStatement stmt = getConnection().
                 prepareStatement("SELECT cl.rut_cliente, cl.nombre_cliente, " +
-                        "cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion\n" +
+                        "cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion, COMUNA_cut_comuna \n" +
                         "FROM cliente cl JOIN direccion dr ON cl.DIRECCION_id_direccion = dr.id_direccion WHERE email_cliente = ?")) {
 
             stmt.setString(1, usr.getEmail());
@@ -345,6 +345,7 @@ public class ClientRepositoryImpl implements IClientRepository {
 
         address.setIdAddress(Integer.parseInt(rs.getString("id_direccion")));
         address.setNameAddress(rs.getString("direccion"));
+        address.setForeanIdComune(rs.getString("COMUNA_cut_comuna"));
 
         client.setClientAddress(address);
 

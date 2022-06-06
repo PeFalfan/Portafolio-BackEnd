@@ -54,7 +54,8 @@ public class PetRepositoryImpl implements IPetRepository {
 
         int res = 0;
 
-        String query = "UPDATE mascota SET especie_mascota = ?, raza = ?, edad_mascota = ?, peso_mascota = ?, sexo_mascota = ?, Observaciones = ?, foto = ?, nombre_mascota = ?, CLIENTE_rut_cliente = ? " +
+        String query = "UPDATE mascota SET especie_mascota = ?, raza = ?, edad_mascota = ?, peso_mascota = ?, \n" +
+                "sexo_mascota = ?, Observaciones = ?, foto = ?, nombre_mascota = ?, CLIENTE_rut_cliente = ? " +
                 "WHERE id_mascota = ?";
 
         try ( PreparedStatement stmt = getConnection().
