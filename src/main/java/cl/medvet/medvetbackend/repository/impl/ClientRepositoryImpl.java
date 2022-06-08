@@ -275,8 +275,6 @@ public class ClientRepositoryImpl implements IClientRepository {
 
             res = stmt.executeUpdate();
 
-            System.out.println("Registro Creado correctamente...");
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

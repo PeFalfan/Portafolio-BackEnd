@@ -1,6 +1,7 @@
 package cl.medvet.medvetbackend.repository.impl;
 
 import cl.medvet.medvetbackend.models.ExamModel;
+import cl.medvet.medvetbackend.models.PrescriptionModel;
 import cl.medvet.medvetbackend.repository.IExamRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
 import org.springframework.stereotype.Repository;
@@ -67,5 +68,26 @@ public class ExamRepositoryImpl implements IExamRepository {
             e.printStackTrace();
         }
         return resp;
+    }
+
+    public int uploadPrescription(PrescriptionModel prescription) throws SQLException{
+        int res = 0;
+        String query = "INSERT INTO receta VALUES (0, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = getConnection()
+                .prepareStatement(query)) {
+            stmt.setString(1, prescription.getNameOwner());
+            stmt.setString(2, prescription.getRutOwner());
+            stmt.setString(3, prescription.getNameVet());
+            stmt.setString(4, prescription.getNamePet());
+            stmt.setString(5, prescription.getRecipeDesc());
+            stmt.setInt(6, prescription.getIdPet());
+            stmt.setString(7, prescription.getDate());
+
+            res = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
     }
 }

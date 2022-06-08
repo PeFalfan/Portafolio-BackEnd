@@ -78,15 +78,28 @@ public class PetController {
         return response;
     }
 
-    @GetMapping("/getRecipe{idRecipe}")
-    public @ResponseBody ResponseModel getRecipe(@RequestParam(value = "idRecipe") int idRecipe){
+    @GetMapping(value = "/getPrescriptions{idPet}")
+    public @ResponseBody ResponseModel getRecipe(@RequestParam(value = "idPet") int idPet){
 
         ResponseModel response = new ResponseModel();
 
         try{
 
-            response = petService.getRecipeById(idRecipe);
+            response = petService.getRecipeById(idPet);
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    @GetMapping(value = "/generateRecipe{idPet}")
+    public @ResponseBody ResponseModel generatePrescription(int idPet){
+        ResponseModel response = new ResponseModel();
+
+        try{
+            response = petService.generatePrescription(idPet);
         }catch (Exception e){
             e.printStackTrace();
         }

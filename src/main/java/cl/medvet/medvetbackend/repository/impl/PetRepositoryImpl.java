@@ -1,12 +1,13 @@
 package cl.medvet.medvetbackend.repository.impl;
 
 import cl.medvet.medvetbackend.models.PetModel;
-import cl.medvet.medvetbackend.models.RecipeModel;
+import cl.medvet.medvetbackend.models.PrescriptionModel;
 import cl.medvet.medvetbackend.repository.IPetRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,38 +143,41 @@ public class PetRepositoryImpl implements IPetRepository {
 
     }
 
-    public RecipeModel getRecipeById(int idRecipe){
+    public List<PrescriptionModel> getRecipeById(int idPet){
 
-        RecipeModel recipe = new RecipeModel();
+        List<PrescriptionModel> recipes = new ArrayList<>();
 
         try(PreparedStatement stmt = getConnection()
-                .prepareStatement("SELECT id_receta, nombre_paciente, nombre_responsable, receta_descrip, nombre_veterinario \n" +
-                        "FROM receta\n" +
-                        "WHERE id_receta = ?;")) {
-            stmt.setInt(1, idRecipe);
+                .prepareStatement("SELECT * \n" +
+                        " FROM receta \n" +
+                        " WHERE mascota_id_mascota = ?")) {
+            stmt.setInt(1, idPet);
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                recipe = mapRecipe(rs);
+                recipes.add(mapRecipe(rs));
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return recipe;
+        return recipes;
     }
 
-    private RecipeModel mapRecipe(ResultSet rs) throws SQLException {
+    private PrescriptionModel mapRecipe(ResultSet rs) throws SQLException {
 
-        RecipeModel recipe = new RecipeModel();
+        PrescriptionModel recipe = new PrescriptionModel();
 
         recipe.setIdRecipe(rs.getInt("id_receta"));
-        recipe.setNamePet(rs.getString("nombre_paciente"));
         recipe.setNameOwner(rs.getString("nombre_responsable"));
-        recipe.setRecipeDesc(rs.getString("receta_descrip"));
+        recipe.setRutOwner(rs.getString("rut_responsable"));
         recipe.setNameVet(rs.getString("nombre_veterinario"));
+        recipe.setNamePet(rs.getString("nombre_paciente"));
+        recipe.setRecipeDesc(rs.getString("receta_descrip"));
+        recipe.setIdPet(rs.getInt("mascota_id_mascota"));
+        recipe.setDate(rs.getString("fecha"));
 
         return recipe;
     }

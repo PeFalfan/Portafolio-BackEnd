@@ -1,6 +1,7 @@
 package cl.medvet.medvetbackend.controllers;
 
 import cl.medvet.medvetbackend.models.ExamModel;
+import cl.medvet.medvetbackend.models.PrescriptionModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.services.impl.ExamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,18 @@ public class ExamController {
         }
 
         return response;
+    }
+
+    @PostMapping(value = "/uploadPrescription")
+    public @ResponseBody ResponseModel uploadPrescription(@RequestBody PrescriptionModel prescription){
+        ResponseModel response = new ResponseModel();
+
+        try{
+            response = examService.uploadPrescription(prescription);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return  response;
     }
 }
