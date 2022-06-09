@@ -5,10 +5,7 @@ import cl.medvet.medvetbackend.repository.IProductRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +49,21 @@ public class ProductRepositoryImpl implements IProductRepository {
 
     @Override
     public int addProduct(ProductModel product) {
-        return 0;
+        int res = 0;
+        String query = "INSERT INTO producto  VALUES(0, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement stmt = getConnection()
+                .prepareStatement(query)) {
+            stmt.setString(1,product.getName_product());
+            stmt.setString(2,product.getDesc_product());
+            stmt.setString(3,product.getImage_product());
+            stmt.setInt(4,product.getStock_product());
+            stmt.setDouble(5,product.getPrice_product());
+            stmt.setInt(6, product.getType_product());
+
+            res = stmt.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return res;
     }
 }

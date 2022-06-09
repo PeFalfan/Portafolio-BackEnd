@@ -11,10 +11,9 @@ public class ProductModel implements Serializable {
     private int id_product;
     private String name_product;
     private String desc_product;
-    private int stock_product;
     private String image_product;
+    private int stock_product;
     private int price_product;
-
     private int type_product;
 
     public ProductModel() {

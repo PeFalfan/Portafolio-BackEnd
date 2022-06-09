@@ -32,6 +32,19 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ResponseModel addProduct(ProductModel product) {
-        return null;
+        ResponseModel response = new ResponseModel();
+
+        try{
+            response.setData(productRepo.addProduct(product));
+            response.setMessageResponse("Producto agregado correctamente");
+            response.setError(null);
+        } catch (Exception e){
+            e.printStackTrace();
+            response.setError(e.getMessage());
+            response.setData(null);
+            response.setMessageResponse("Error al agregar producto");
+        }
+
+        return response;
     }
 }
