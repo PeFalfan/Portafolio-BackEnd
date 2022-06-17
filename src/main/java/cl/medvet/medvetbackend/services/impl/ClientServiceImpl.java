@@ -159,7 +159,6 @@ public class ClientServiceImpl implements IClientService {
                 client.setClientPassword(pe.encode(client.getClientPassword()));
             }
 
-
             res = clientRepo.editClient(client);
 
             response.setData(res);

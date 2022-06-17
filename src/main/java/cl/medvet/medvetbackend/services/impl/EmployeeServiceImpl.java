@@ -112,9 +112,15 @@ public class EmployeeServiceImpl implements IEmployeeService {
         ResponseModel response = new ResponseModel();
         int res = 0;
 
+        EmployeeModel controlEmployee = new EmployeeModel();
+
+        controlEmployee = empRepo.getEmployeeByRut(emp.getRutEmployee());
+
         try {
 
-            emp.setPassword(pe.encode(emp.getPassword()));
+            if (!emp.getPassword().equals(controlEmployee.getPassword())){
+                emp.setPassword(pe.encode(emp.getPassword()));
+            }
 
             res = empRepo.editEmployee(emp);
 

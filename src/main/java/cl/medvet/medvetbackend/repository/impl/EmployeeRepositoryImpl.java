@@ -118,7 +118,7 @@ public class EmployeeRepositoryImpl implements IEmployeeRepository {
         int res = 0;
 
         String query = "UPDATE empleado SET nombre_empleado = ?, " +
-                "email_empleado = ?, especialidad = ?, TIPO_EMPLEADO_id_tipo_empleado = ?, contrasena_empleado = ? , estado_empleado = ?" +
+                "email_empleado = ?, especialidad = ?, TIPO_EMPLEADO_id_tipo_empleado = ?, contrasena_empleado = ? , estado_empleado = ? " +
                 "WHERE rut_empleado = ?";
 
         try (PreparedStatement stmt = getConnection().

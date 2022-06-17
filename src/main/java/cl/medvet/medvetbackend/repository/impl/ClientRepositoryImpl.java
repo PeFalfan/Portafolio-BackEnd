@@ -102,7 +102,7 @@ public class ClientRepositoryImpl implements IClientRepository {
                     client.setClientName(employee.getNameEmployee());
                     client.setClientPassword(employee.getPassword());
                     client.setClientEmail(employee.getEmailEmployee());
-                    client.setClientEmailRecovery("1");
+                    client.setClientEmailRecovery(String.valueOf(employee.getTypeEmployee()));
                     return client;
                 }
             }
