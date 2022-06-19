@@ -1,5 +1,6 @@
 package cl.medvet.medvetbackend.repository.impl;
 
+import cl.medvet.medvetbackend.models.PaymentMethodModel;
 import cl.medvet.medvetbackend.models.ProductModel;
 import cl.medvet.medvetbackend.repository.IProductRepository;
 import cl.medvet.medvetbackend.util.DataBaseConnection;
@@ -65,5 +66,33 @@ public class ProductRepositoryImpl implements IProductRepository {
             e.printStackTrace();
         }
         return res;
+    }
+
+    public List<PaymentMethodModel> getMethods(){
+        List<PaymentMethodModel> methods = new ArrayList<>();
+
+        String query = "SELECT * FROM medio_pago";
+
+        try (PreparedStatement stmt = getConnection()
+                .prepareStatement(query)) {
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()){
+                methods.add(mapPaymentMethod(rs));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return methods;
+    }
+
+    public PaymentMethodModel mapPaymentMethod(ResultSet rs) throws SQLException{
+        PaymentMethodModel payment = new PaymentMethodModel();
+
+        payment.setId(rs.getInt("id_medio_pago"));
+        payment.setName(rs.getString("nombre_medio_pago"));
+
+        return payment;
     }
 }

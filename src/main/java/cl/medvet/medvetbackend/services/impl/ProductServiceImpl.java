@@ -47,4 +47,20 @@ public class ProductServiceImpl implements IProductService {
 
         return response;
     }
+
+    public ResponseModel getPaymentMethods(){
+        ResponseModel response = new ResponseModel();
+
+        try {
+            response.setData(productRepo.getMethods());
+            response.setMessageResponse("Metodos consultados correctamente");
+            response.setError(null);
+        } catch (Exception e){
+            response.setData(null);
+            response.setMessageResponse("Error al consultar Metodos de pago");
+            response.setError(e.getMessage());
+        }
+
+        return response;
+    }
 }

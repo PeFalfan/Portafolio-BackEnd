@@ -39,4 +39,17 @@ public class ProductControllers {
         return response;
     }
 
+    @GetMapping(value = "/getPaymentMethods")
+    public @ResponseBody ResponseModel getPaymentMethod(){
+        ResponseModel response = new ResponseModel();
+
+        try {
+            response = productService.getPaymentMethods();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
 }
