@@ -8,6 +8,6 @@ public interface IBookTimeRepository {
 
     public List<BookTimeModel> getAllBookTimes();
 
-    public List<BookTimeModel> getAllBookTimesByPet(int idPet);
+    public List<BookTimeModel> getAllBookTimesByClient(String rutClient);
 
 }

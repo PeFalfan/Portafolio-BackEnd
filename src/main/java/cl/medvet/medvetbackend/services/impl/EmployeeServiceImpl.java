@@ -4,7 +4,9 @@ import cl.medvet.medvetbackend.models.EmployeeModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.repository.impl.EmployeeRepositoryImpl;
 import cl.medvet.medvetbackend.services.IEmployeeService;
+import cl.medvet.medvetbackend.util.EmailCommunication;
 import cl.medvet.medvetbackend.util.PasswordEncryption;
+import cl.medvet.medvetbackend.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -150,6 +152,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
         try {
 
+            employee.setPassword(PasswordGenerator.getAlphaNumericString());
+
             // encoding pass:
             employee.setPassword(pe.encode(employee.getPassword()));
 
@@ -157,6 +161,15 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
             response.setData(resp);
             if (resp == 1) {
+
+                String bodyMessage = "Buenas tardes " + employee.getNameEmployee() + "!\n" +
+                        "Esperando te encuentres bien, te queremos dar la bienvenida al equipo MEDVET! aqui tu clave de ingreso a nuestra plataforma!\n" +
+                        "Clave: " + pe.decode(employee.getPassword()) +"\n" +
+                        "crezcamos juntos!!\n" +
+                        "Equipo MEDVET.";
+
+                EmailCommunication.sendMail(employee.getEmailEmployee(), "Entrega Credenciales nuevo colaborador",bodyMessage);
+
                 response.setMessageResponse("Empleado creado correctamente...");
                 response.setError(null);
             } else {

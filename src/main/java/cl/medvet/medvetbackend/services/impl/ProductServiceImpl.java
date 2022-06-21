@@ -63,4 +63,21 @@ public class ProductServiceImpl implements IProductService {
 
         return response;
     }
+
+    public  ResponseModel updateProduct(ProductModel prod){
+        ResponseModel response = new ResponseModel();
+
+        try {
+            response.setData(productRepo.editProduct(prod));
+            response.setMessageResponse("Producto actualizado correctamente");
+            response.setError(null);
+        } catch (Exception e){
+            response.setData(null);
+            response.setMessageResponse("Error al intentar actualizar producto");
+            response.setError(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return response;
+    }
 }

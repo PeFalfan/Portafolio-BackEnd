@@ -27,7 +27,7 @@ public class ObservationRepositoryImpl implements IObservationRepository {
         try (PreparedStatement stmt = getConnection()
                 .prepareStatement(query)) {
             stmt.setString(1,obs.getObservationDetail());
-            stmt.setString(2, obs.getIdEmployee());
+            stmt.setString(2, obs.getEmployeeRut());
             stmt.setInt(3, obs.getPetId());
 
             res = stmt.executeUpdate();
@@ -40,12 +40,12 @@ public class ObservationRepositoryImpl implements IObservationRepository {
     @Override
     public int editObservation(ObservationModel obs) {
         int res = 0;
-        String query = "UPDATE observacion SET observacion = ?, id_veterinario = ? " +
+        String query = "UPDATE observacion SET observacion = ?, rut_veterinario = ? " +
                 "WHERE id_obs = ?";
         try (PreparedStatement stmt = getConnection()
                 .prepareStatement(query)) {
             stmt.setString(1,obs.getObservationDetail());
-            stmt.setString(2,obs.getIdEmployee());
+            stmt.setString(2,obs.getEmployeeRut());
             stmt.setInt(3,obs.getObservationId());
 
             res = stmt.executeUpdate();
@@ -90,7 +90,7 @@ public class ObservationRepositoryImpl implements IObservationRepository {
     public List<ObservationModel> getAllObservationsByEmployee(String rutEmployee) {
         List<ObservationModel> observations = new ArrayList<>();
         try(PreparedStatement stmt = getConnection()
-                .prepareStatement("SELECT * FROM observacion WHERE  id_veterinario = ?")) {
+                .prepareStatement("SELECT * FROM observacion WHERE  rut_veterinario = ?")) {
             stmt.setString(1,rutEmployee);
             ResultSet rs = stmt.executeQuery();
 
@@ -108,7 +108,7 @@ public class ObservationRepositoryImpl implements IObservationRepository {
 
         obs.setObservationId(rs.getInt("id_obs"));
         obs.setObservationDetail(rs.getString("observacion"));
-        obs.setIdEmployee(rs.getString("id_veterinario"));
+        obs.setEmployeeRut(rs.getString("rut_veterinario"));
         obs.setPetId(rs.getInt("MASCOTA_id_mascota"));
 
         return obs;

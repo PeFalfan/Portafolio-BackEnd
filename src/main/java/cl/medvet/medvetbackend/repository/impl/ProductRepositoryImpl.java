@@ -68,6 +68,31 @@ public class ProductRepositoryImpl implements IProductRepository {
         return res;
     }
 
+    public int editProduct(ProductModel product){
+
+        int res = 0;
+
+        String query = "UPDATE producto SET nombre_prod = ?, descripcion_prod = ?, image_prod = ?, stock_prod = ?, " +
+                "precio_prod = ?, TIPO_PRODUCTO_id_tipo_prod = ? WHERE id_productos = ?";
+
+        try (PreparedStatement stmt = getConnection()
+                .prepareStatement(query)) {
+            stmt.setString(1, product.getName_product());
+            stmt.setString(2, product.getDesc_product());
+            stmt.setString(3, product.getImage_product());
+            stmt.setInt(4, product.getStock_product());
+            stmt.setInt(5, product.getPrice_product());
+            stmt.setInt(6, product.getType_product());
+            stmt.setInt(7, product.getId_product());
+
+            res = stmt.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     public List<PaymentMethodModel> getMethods(){
         List<PaymentMethodModel> methods = new ArrayList<>();
 

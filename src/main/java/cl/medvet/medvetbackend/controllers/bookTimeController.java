@@ -1,11 +1,9 @@
 package cl.medvet.medvetbackend.controllers;
 
+import cl.medvet.medvetbackend.models.BookTimeModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
 import cl.medvet.medvetbackend.services.impl.BookServiceImpl;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -26,12 +24,25 @@ public class bookTimeController {
         return response;
     }
 
-    @GetMapping(value = "/getBookTimesByPet{idPet}")
-    public @ResponseBody ResponseModel getBookTimesByPet(int idPet){
+    @PutMapping(value = "/bookATime")
+    public @ResponseBody ResponseModel bookATime(@RequestBody BookTimeModel book){
+        ResponseModel response = new ResponseModel();
+
+        try{
+            response = bookService.bookATime(book);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    @GetMapping(value = "/getBookTimesByClient{client}")
+    public @ResponseBody ResponseModel getBookTimesByClient(String client){
 
         ResponseModel response = new ResponseModel();
         try {
-            response = bookService.getAllBookedTimesByPet(idPet);
+            response = bookService.getAllBookedTimesByClient(client);
         }catch (Exception e){
             e.printStackTrace();
         }

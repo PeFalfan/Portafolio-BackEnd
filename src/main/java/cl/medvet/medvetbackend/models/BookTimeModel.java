@@ -15,7 +15,7 @@ public class BookTimeModel implements Serializable {
     private String reservationDate;
     private String rutEmployee;
     private int idState;
-    private int idPet;
+    private String rutClient;
 
     public BookTimeModel() {
     }
@@ -52,12 +52,12 @@ public class BookTimeModel implements Serializable {
         this.reservationDate = reservationDate;
     }
 
-    public int getIdPet() {
-        return idPet;
+    public String getRutClient() {
+        return rutClient;
     }
 
-    public void setIdPet(int idPet) {
-        this.idPet = idPet;
+    public void setRutClient(String idPet) {
+        this.rutClient = idPet;
     }
 
     public String getRutEmployee() {

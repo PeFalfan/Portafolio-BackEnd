@@ -115,7 +115,6 @@ public class ClientController {
             response = clientService.editClient(client);
 
         }catch (Exception e) {
-            System.out.println("Error al editar CLiente...");
             e.printStackTrace();
         }
 

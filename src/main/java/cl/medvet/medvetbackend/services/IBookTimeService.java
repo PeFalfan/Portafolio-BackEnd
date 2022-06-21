@@ -6,6 +6,6 @@ public interface IBookTimeService {
 
     public ResponseModel getAllBookTimes();
 
-    public ResponseModel getAllBookedTimesByPet(int idPet);
+    public ResponseModel getAllBookedTimesByClient(String rutClient);
 
 }

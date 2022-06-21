@@ -11,7 +11,7 @@ public class ObservationModel implements Serializable {
 
     private int observationId;
     private String observationDetail;
-    private String idEmployee;
+    private String employeeRut;
     private int petId;
 
     public ObservationModel() {
@@ -33,12 +33,12 @@ public class ObservationModel implements Serializable {
         this.observationDetail = observationDetail;
     }
 
-    public String getIdEmployee() {
-        return idEmployee;
+    public String getEmployeeRut() {
+        return employeeRut;
     }
 
-    public void setIdEmployee(String idEmployee) {
-        this.idEmployee = idEmployee;
+    public void setEmployeeRut(String idEmployee) {
+        this.employeeRut = idEmployee;
     }
 
     public int getPetId() {

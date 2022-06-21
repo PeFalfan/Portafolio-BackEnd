@@ -52,4 +52,17 @@ public class ProductControllers {
         return response;
     }
 
+    @PutMapping(value = "/updateProduct")
+    public @ResponseBody ResponseModel updateProduct(@RequestBody ProductModel product){
+        ResponseModel response = new ResponseModel();
+
+        try {
+            response = productService.updateProduct(product);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
 }
