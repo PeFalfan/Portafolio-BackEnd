@@ -1,9 +1,6 @@
 package cl.medvet.medvetbackend.services.impl;
 
-import cl.medvet.medvetbackend.models.ClientModel;
-import cl.medvet.medvetbackend.models.ExamModel;
-import cl.medvet.medvetbackend.models.PrescriptionModel;
-import cl.medvet.medvetbackend.models.ResponseModel;
+import cl.medvet.medvetbackend.models.*;
 import cl.medvet.medvetbackend.repository.impl.ClientRepositoryImpl;
 import cl.medvet.medvetbackend.repository.impl.ExamRepositoryImpl;
 import cl.medvet.medvetbackend.services.IExamService;
@@ -26,6 +23,8 @@ public class ExamServiceImpl implements IExamService {
 
     @Autowired
     ClientRepositoryImpl clientRepo = new ClientRepositoryImpl();
+
+    PetServiceImpl petService = new PetServiceImpl();
 
 
     @Override
@@ -81,7 +80,7 @@ public class ExamServiceImpl implements IExamService {
         return response;
     }
 
-    public  ResponseModel sendExams(int idPet){
+    public  ResponseModel requestExamsResults(int idPet){
         ResponseModel response = new ResponseModel();
 
         try{
@@ -90,7 +89,7 @@ public class ExamServiceImpl implements IExamService {
 
             List<ExamModel> documents = examRepo.getExamsByPet(idPet);
 
-            int res = sendDocuments(documents, client);
+            int res = sendExams(documents, client);
 
             response.setData(res);
             if (response.getData() == null){
@@ -108,7 +107,7 @@ public class ExamServiceImpl implements IExamService {
         return response;
     }
 
-    public int sendDocuments(List<ExamModel> exams, ClientModel client){
+    public int sendExams(List<ExamModel> exams, ClientModel client){
         int res = 0;
 
         List<String> paths = new ArrayList<>();
@@ -142,5 +141,86 @@ public class ExamServiceImpl implements IExamService {
         res = EmailCommunication.sendMail(client.getClientEmail(), "Material solicitado", bodyMessage, paths);
 
         return res;
+    }
+
+    public  ResponseModel requestPresc(int idPet){
+        ResponseModel response = new ResponseModel();
+
+        try{
+
+            ClientModel client = clientRepo.getClientByPet(idPet);
+
+            List<PrescriptionsToDownload> documents = (List<PrescriptionsToDownload>) petService.generatePrescription(idPet).getData();
+
+            int res = sendPrescriptions(documents, client);
+
+            response.setData(res);
+            if (response.getData() == null){
+                response.setMessageResponse("No se encuentran prescripciones cargados para la mascota ID°" + idPet +".");
+            } else {
+                response.setMessageResponse("Documentos cargados correctamente.");
+            }
+            response.setError(null);
+        }catch (Exception e){
+            response.setData(null);
+            response.setError(e.getMessage());
+            response.setMessageResponse("Error al realizar llamado al servicio");
+        }
+
+        return response;
+    }
+
+    public int sendPrescriptions(List<PrescriptionsToDownload> presc, ClientModel client){
+        int res = 0;
+
+        List<String> paths = new ArrayList<>();
+
+        for (PrescriptionsToDownload doc : presc) {
+
+            String pName = "src/main/resources/temporal/"+doc.getTitle();
+
+            paths.add(pName);
+
+            File file = new File(pName);
+
+            try (FileOutputStream fos = new FileOutputStream(file)){
+
+                byte[] decoder = Base64.getDecoder().decode(doc.getPrestcription());
+
+                fos.write((decoder));
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+        // ahora podemos iterar sobre los usuarios, y a quienes sean tipo 2, se les enviará el correo, con el archivo.
+
+        String bodyMessage = "Estimado  " + client.getClientName() + "\n" +
+                "\n Se adjuntan las preescripciones solicitadas! " + "\n" +
+                " Saludos!";
+
+        res = EmailCommunication.sendMail(client.getClientEmail(), "Material solicitado", bodyMessage, paths);
+
+        return res;
+    }
+
+    public ResponseModel loadPrescriptions(int idPet){
+
+        ResponseModel resp = new ResponseModel();
+
+        try{
+            resp.setData(examRepo.getPrescriptions(idPet));
+            resp.setError(null);
+            resp.setMessageResponse("Prescripciones cargadas correctamente!");
+        }catch (Exception e){
+            resp.setData(null);
+            resp.setError(e.getMessage());
+            resp.setMessageResponse("Error al momento de cargar prescripciones!");
+            e.printStackTrace();
+        }
+
+        return resp;
     }
 }

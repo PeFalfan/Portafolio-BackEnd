@@ -57,10 +57,36 @@ public class ExamController {
     public @ResponseBody ResponseModel sendExamsByIdPet(@RequestParam(value = "idPet") int idPet){
         ResponseModel response = new ResponseModel();
         try {
-            response = examService.sendExams(idPet);
+            response = examService.requestExamsResults(idPet);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return response;
+    }
+
+    @GetMapping(value = "/requestPrescriptionsByPet{idPet}")
+    public @ResponseBody ResponseModel requestPrescriptionsByPet(@RequestParam(value = "idPet") int idPet){
+        ResponseModel response = new ResponseModel();
+
+        try{
+            response = examService.requestPresc(idPet);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
+    @GetMapping(value = "/loadPrescriptionsByPet{idPet}")
+    public @ResponseBody ResponseModel loadPrescriptionsByPet(@RequestParam(value = "idPet") int idPet){
+        ResponseModel res = new ResponseModel();
+
+        try{
+            res = examService.loadPrescriptions(idPet);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return res;
     }
 }

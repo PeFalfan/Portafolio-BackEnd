@@ -90,4 +90,38 @@ public class ExamRepositoryImpl implements IExamRepository {
 
         return res;
     }
+
+    public List<PrescriptionModel> getPrescriptions(int idPet) {
+
+        List<PrescriptionModel> prescriptions = new ArrayList<>();
+
+        try (PreparedStatement stmt = getConnection()
+                .prepareStatement("SELECT * FROM receta WHERE mascota_id_mascota = ?")) {
+            stmt.setInt(1, idPet);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()){
+                prescriptions.add(mapPrescription(rs));
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return prescriptions;
+    }
+
+    public PrescriptionModel mapPrescription(ResultSet rs) throws SQLException{
+        PrescriptionModel presc = new PrescriptionModel();
+
+        presc.setIdRecipe(rs.getInt("id_receta"));
+        presc.setNameOwner(rs.getString("nombre_responsable"));
+        presc.setRutOwner(rs.getString("rut_responsable"));
+        presc.setNameVet(rs.getString("nombre_veterinario"));
+        presc.setNamePet(rs.getString("nombre_veterinario"));
+        presc.setRecipeDesc(rs.getString("receta_descrip"));
+        presc.setIdPet(rs.getInt("mascota_id_mascota"));
+        presc.setDate(rs.getString("fecha"));
+
+        return presc;
+    }
 }
