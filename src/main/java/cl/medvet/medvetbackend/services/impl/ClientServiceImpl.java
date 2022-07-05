@@ -9,6 +9,8 @@ import cl.medvet.medvetbackend.util.PasswordEncryption;
 import cl.medvet.medvetbackend.util.PasswordGenerator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class ClientServiceImpl implements IClientService {
     PasswordEncryption pe = new PasswordEncryption();
@@ -269,7 +271,7 @@ public class ClientServiceImpl implements IClientService {
                                 "Bienvenido denuevo!\n" +
                                 "Equipo MEDVET.";
 
-                        emailStatus = EmailCommunication.sendMail(email, "Recuperacion de contraseña",bodyMessage);
+                        emailStatus = EmailCommunication.sendMail(email, "Recuperacion de contraseña",bodyMessage, new ArrayList<>());
 
                     }
                 }
@@ -296,7 +298,7 @@ public class ClientServiceImpl implements IClientService {
                             "Te esperamos!\n" +
                             "Equipo MEDVET.";
 
-                    emailStatus = EmailCommunication.sendMail(email, "Recuperacion de contraseña",bodyMessage);
+                    emailStatus = EmailCommunication.sendMail(email, "Recuperacion de contraseña",bodyMessage, new ArrayList<>());
 
                 }
 

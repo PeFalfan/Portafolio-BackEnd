@@ -1,20 +1,31 @@
 package cl.medvet.medvetbackend.services.impl;
 
+import cl.medvet.medvetbackend.models.ClientModel;
 import cl.medvet.medvetbackend.models.ExamModel;
 import cl.medvet.medvetbackend.models.PrescriptionModel;
 import cl.medvet.medvetbackend.models.ResponseModel;
+import cl.medvet.medvetbackend.repository.impl.ClientRepositoryImpl;
 import cl.medvet.medvetbackend.repository.impl.ExamRepositoryImpl;
 import cl.medvet.medvetbackend.services.IExamService;
+import cl.medvet.medvetbackend.util.EmailCommunication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 @Service
 public class ExamServiceImpl implements IExamService {
 
     @Autowired
     ExamRepositoryImpl examRepo = new ExamRepositoryImpl();
+
+    @Autowired
+    ClientRepositoryImpl clientRepo = new ClientRepositoryImpl();
 
 
     @Override
@@ -68,5 +79,68 @@ public class ExamServiceImpl implements IExamService {
             e.printStackTrace();
         }
         return response;
+    }
+
+    public  ResponseModel sendExams(int idPet){
+        ResponseModel response = new ResponseModel();
+
+        try{
+
+            ClientModel client = clientRepo.getClientByPet(idPet);
+
+            List<ExamModel> documents = examRepo.getExamsByPet(idPet);
+
+            int res = sendDocuments(documents, client);
+
+            response.setData(res);
+            if (response.getData() == null){
+                response.setMessageResponse("No se encuentran examenes cargados para la mascota ID°" + idPet +".");
+            } else {
+                response.setMessageResponse("Documentos cargados correctamente.");
+            }
+            response.setError(null);
+        }catch (Exception e){
+            response.setData(null);
+            response.setError(e.getMessage());
+            response.setMessageResponse("Error al realizar llamado al servicio");
+        }
+
+        return response;
+    }
+
+    public int sendDocuments(List<ExamModel> exams, ClientModel client){
+        int res = 0;
+
+        List<String> paths = new ArrayList<>();
+
+        for (ExamModel doc : exams) {
+
+            String pName = "src/main/resources/temporal/"+doc.getNameExam()+".pdf";
+
+            paths.add(pName);
+
+            File file = new File(pName);
+
+            try (FileOutputStream fos = new FileOutputStream(file)){
+
+                byte[] decoder = Base64.getDecoder().decode(doc.getExamResult());
+
+                fos.write((decoder));
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+        // ahora podemos iterar sobre los usuarios, y a quienes sean tipo 2, se les enviará el correo, con el archivo.
+
+        String bodyMessage = "Estimado  " + client.getClientName() + "\n" +
+                "\n Se adjuntan los examenes solicitados! " + "\n" +
+                " Saludos!";
+
+        res = EmailCommunication.sendMail(client.getClientEmail(), "Material solicitado", bodyMessage, paths);
+
+        return res;
     }
 }

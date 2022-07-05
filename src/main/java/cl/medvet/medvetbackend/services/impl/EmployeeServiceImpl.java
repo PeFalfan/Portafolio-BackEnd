@@ -10,6 +10,8 @@ import cl.medvet.medvetbackend.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class EmployeeServiceImpl implements IEmployeeService {
 
@@ -168,7 +170,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
                         "crezcamos juntos!!\n" +
                         "Equipo MEDVET.";
 
-                EmailCommunication.sendMail(employee.getEmailEmployee(), "Entrega Credenciales nuevo colaborador",bodyMessage);
+                EmailCommunication.sendMail(employee.getEmailEmployee(), "Entrega Credenciales nuevo colaborador",bodyMessage, new ArrayList<>());
 
                 response.setMessageResponse("Empleado creado correctamente...");
                 response.setError(null);

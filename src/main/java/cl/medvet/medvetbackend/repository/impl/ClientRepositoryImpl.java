@@ -350,6 +350,36 @@ public class ClientRepositoryImpl implements IClientRepository {
         return client;
     }
 
+    public ClientModel getClientByPet(int idPet) {
+
+        ClientModel client;
+
+        String query = "SELECT cl.rut_cliente, cl.nombre_cliente, cl.apellidos_cliente, cl.fono_cliente, cl.email_cliente, cl.contrasena_cliente, dr.id_direccion, dr.direccion, dr.COMUNA_cut_comuna " +
+                " FROM cliente cl JOIN direccion dr ON cl.DIRECCION_id_direccion = dr.id_direccion JOIN mascota ms ON cl.rut_cliente = ms.CLIENTE_rut_cliente\n " +
+                "WHERE ms.id_mascota = ?";
+
+        try (PreparedStatement stmt = getConnection().
+                prepareStatement(query)) {
+
+            stmt.setInt(1, idPet);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                client = mapClient(rs);
+            } else {
+                client = null;
+            }
+
+            return client;
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
     // Method to get an id of an address
     public int getIdAddress(AddressModel address){
 

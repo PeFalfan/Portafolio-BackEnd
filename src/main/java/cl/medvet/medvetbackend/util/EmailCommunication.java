@@ -1,16 +1,19 @@
 package cl.medvet.medvetbackend.util;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.Session;
-import javax.mail.Transport;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.List;
 import java.util.Properties;
 
 public class EmailCommunication {
 
-    public static int sendMail(String addressee, String matter, String body) {
+    public static int sendMail(String addressee, String matter, String body, List<String> pathName) {
 
         // portafolio.medvet@gmail.com
         // porta123456
@@ -28,14 +31,40 @@ public class EmailCommunication {
         properties.put("mail.smtp.port", "587"); //El puerto SMTP seguro de Google
 
         Session session = Session.getDefaultInstance(properties);
-        MimeMessage message = new MimeMessage(session);
+        Message message = new MimeMessage(session);
 
         try {
 
             message.setFrom(new InternetAddress(sender));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(addressee));   //Se podrían añadir varios de la misma manera
             message.setSubject(matter);
-            message.setText(body);
+            BodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setText(body);
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+
+            if (pathName.size() > 0){
+
+                for ( String path : pathName ) {
+
+                    messageBodyPart = new MimeBodyPart();
+                    String fn = path;
+                    DataSource source = new FileDataSource(fn);
+                    messageBodyPart.setDataHandler(new DataHandler(source));
+
+                    String[] nameForDocument = fn.split("/");
+
+                    messageBodyPart.setFileName(nameForDocument[nameForDocument.length-1]);
+                    multipart.addBodyPart(messageBodyPart);
+
+                }
+
+
+            }
+
+            message.setContent(multipart);
+
+
             Transport transport = session.getTransport("smtp");
             transport.connect("smtp.gmail.com", sender, password);
             transport.sendMessage(message, message.getAllRecipients());

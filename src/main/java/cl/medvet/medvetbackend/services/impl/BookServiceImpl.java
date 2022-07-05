@@ -7,8 +7,9 @@ import cl.medvet.medvetbackend.repository.impl.BookTimeRepositoryImpl;
 import cl.medvet.medvetbackend.repository.impl.ClientRepositoryImpl;
 import cl.medvet.medvetbackend.services.IBookTimeService;
 import cl.medvet.medvetbackend.util.EmailCommunication;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class BookServiceImpl implements IBookTimeService {
@@ -58,12 +59,12 @@ public class BookServiceImpl implements IBookTimeService {
                         "Te esperamos! \n \n " +
                         "Equipo MEDVET";
 
-                emailStatus = EmailCommunication.sendMail(client.getClientEmail(), "Reserva de Hora", bodyMessage);
+                emailStatus = EmailCommunication.sendMail(client.getClientEmail(), "Reserva de Hora", bodyMessage, new ArrayList<>());
 
                 if (emailStatus == 1){
-                    response.setMessageResponse(response.getMessageResponse() + "Y Correo enviado correctamente!");
+                    response.setMessageResponse(response.getMessageResponse() + " Y Correo enviado correctamente!");
                 } else {
-                    response.setMessageResponse(response.getMessageResponse() + "Y Error al enviar correo!");
+                    response.setMessageResponse(response.getMessageResponse() + " Y Error al enviar correo!");
                 }
 
             }

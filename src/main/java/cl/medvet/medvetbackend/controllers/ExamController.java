@@ -14,7 +14,7 @@ public class ExamController {
     @Autowired
     ExamServiceImpl examService = new ExamServiceImpl();
 
-    @GetMapping(value = "/getExamsFor{idPet}")
+    @GetMapping(value = "/getExamsFor{idPet}{email}")
     public @ResponseBody ResponseModel getExamsFor(@RequestParam(value = "idPet") int idPet){
         ResponseModel response = new ResponseModel();
 
@@ -51,5 +51,16 @@ public class ExamController {
         }
 
         return  response;
+    }
+
+    @GetMapping(value = "/sendExamsByIdPet{idPet}")
+    public @ResponseBody ResponseModel sendExamsByIdPet(@RequestParam(value = "idPet") int idPet){
+        ResponseModel response = new ResponseModel();
+        try {
+            response = examService.sendExams(idPet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }
